@@ -4,12 +4,17 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/styles.css?v=1.0">
   <title>all_users</title>
-  <style type="text/css">
-    table,th,td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-  </style>
+  <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     <h1>All Users</h1>
@@ -39,7 +44,7 @@
     
     <form action="all_users.php" method="post"> 
         <label for="pattern">Start with letter : </label>
-        <input type="search" id="pattern" name="pattern">
+        <input type="text" id="pattern" name="pattern" maxlength="1">
 
         <label for="status">and status is : </label>
         <select name="status">
@@ -62,18 +67,23 @@
                 <th>Status</th>
             </tr>';
 
-        /*TODO que ça fonctionne*/
         if (isset($_POST['pattern']) && isset($_POST['status'])) {
-            $stmt = $pdo->query("SELECT * FROM users JOIN status ON users.status_id = status.id 
-                                WHERE status.name = '$_POST['status']' AND username LIKE '".$_POST['pattern']."%'ORDER BY username");            
-            while ($row = $stmt->fetch()) {
-                echo '<tr>';
-                echo '<td>'.$row['id'].'</td>';
-                echo '<td>'.$row['username'].'</td>';
-                echo '<td>'.$row['email'].'</td>';
-                echo '<td>'.$row['name'].'</td>';
-                echo '</tr>';
-            }
+            $pattern = '%'.$_POST['pattern'].'%';
+            $status = '='.$_POST['status'];
+        } else {
+            $pattern = '%';
+            $status = '<=3';
+        }
+
+        $stmt = $pdo->query("SELECT * FROM users JOIN status ON users.status_id = status.id 
+                            WHERE status.id $status AND username LIKE '".$pattern."' ORDER BY username");           
+        while ($row = $stmt->fetch()) {
+            echo '<tr>';
+            echo '<td>'.$row['id'].'</td>';
+            echo '<td>'.$row['username'].'</td>';
+            echo '<td>'.$row['email'].'</td>';
+            echo '<td>'.$row['name'].'</td>';
+            echo '</tr>';
         }
     ?>
     </table>
