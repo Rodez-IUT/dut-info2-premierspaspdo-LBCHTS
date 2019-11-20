@@ -4,6 +4,12 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/styles.css?v=1.0">
   <title>all_users</title>
+  <style type="text/css">
+    table,th,td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+  </style>
 </head>
 <body>
     <h1>All Users</h1>
@@ -36,8 +42,10 @@
                     <th>Status</th>
                   </tr>';
             
-            
-            $stmt = $pdo->query('SELECT * FROM users JOIN status ON users.status_id = status.id ORDER BY username');
+            $statusName = "'Active Account'";
+            $pattern = "'e%'";
+            $stmt = $pdo->query("SELECT * FROM users JOIN status ON users.status_id = status.id 
+                                WHERE status.name = $statusName AND username LIKE $pattern ORDER BY username");
             while ($row = $stmt->fetch()) {
                 echo '<tr>';
                 echo '<td>'.$row['id'].'</td>';
