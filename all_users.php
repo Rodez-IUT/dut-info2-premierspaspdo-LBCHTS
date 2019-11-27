@@ -54,11 +54,11 @@ function get($name) {
 </form>
 
 <?php
-$start_letter = htmlspecialchars(get("start_letter"));
+$start_letter = htmlspecialchars(get("start_letter").'%');
 $status_id = (int)get("status_id");
-$sql = "select users.id as user_id, username, email, s.name as status from users join status s on users.status_id = s.id where username like ? and status_id = ? order by username";
+$sql = "select users.id as user_id, username, email, s.name as status from users join status s on users.status_id = s.id where username like :start_letter and status_id = :status_id order by username";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([$start_letter,$status_id]);
+$stmt->execute(['start_letter' => $start_letter, 'status_id' => $status_id]);
 ?>
 <table>
     <tr>
