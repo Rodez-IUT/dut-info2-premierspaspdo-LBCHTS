@@ -44,7 +44,7 @@
     
     <form action="all_users.php" method="post"> 
         <label for="pattern">Start with letter : </label>
-        <input type="text" id="pattern" name="pattern" maxlength="1">
+        <input type="text" id="pattern" name="pattern">
 
         <label for="status">and status is : </label>
         <select name="status">
